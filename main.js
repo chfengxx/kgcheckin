@@ -45,17 +45,17 @@ async function main() {
       printMagenta(`账号 ${userDetail?.data?.nickname} 开始领取VIP...`)
 
       // 周日刷新token
-      // if (new Date().getDay() == 0) {
-      const refreshToken = await send(`/login/token?timestrap=${Date.now()}`, "POST", headers)
-      if (refreshToken?.status == 1) {
-        if (refreshToken?.data?.token !== user.token) {
-          needRefresh = true
-          printYellow(`账号 ${userDetail?.data?.nickname} 需要刷新token`)
-          user.token = refreshToken.data.token
+      if (new Date().getDay() == 0) {
+        const refreshToken = await send(`/login/token?timestrap=${Date.now()}`, "POST", headers)
+        if (refreshToken?.status == 1) {
+          if (refreshToken?.data?.token !== user.token) {
+            needRefresh = true
+            printYellow(`账号 ${userDetail?.data?.nickname} 需要刷新token`)
+            user.token = refreshToken.data.token
+          }
         }
+        refreshUserinfo.push(user)
       }
-      refreshUserinfo.push(user)
-      // }
 
       // 开始听歌
       printYellow(`开始听歌领取VIP...`)
